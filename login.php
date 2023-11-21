@@ -35,19 +35,8 @@
 
                                 <form method="post" class="row g-3">
                                     <div class="col-12">
-                                        <label for="" class="form-label">Your Name</label>
-                                        <input type="text" class="form-control" placeholder="Name" name="name">
-                                    </div>
-                                    <div class="col-12">
                                         <label for="" class="form-label">Your Email</label>
                                         <input type="text" class="form-control" placeholder="Email" name="email">
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="" class="form-label">Username</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">@</span>
-                                            <input type="text" class="form-control" placeholder="Username" name="username">
-                                        </div>
                                     </div>
                                     <div class="col-12">
                                         <label for="" class="form-label">Password</label>
@@ -60,10 +49,10 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                                        <button type="submit" class="btn btn-primary w-100">Log in</button>
                                     </div>
                                     <div class="col-12">
-                                        <span class="small">Already have an account?<a href="login.php">Log in</a></span>
+                                        <span class="small">I don't have an account?<a href="registration.php">Registration</a></span>
                                     </div>
                                 </form>
                             </div>
