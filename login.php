@@ -1,3 +1,10 @@
+<?php 
+session_start();
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +23,44 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<?php
+$msg = "";
+if(isset($_POST['login'])){
+    if(!isset($_POST['email']) || !isset($_POST['password'])){
+        $msg="Please Insert all field";
+    } else{
+        $email = $_POST['email'];
+        $pasword = $_POST['password'];
+
+        $conn = mysqli_connect("localhost", "root", "", "users");
+
+        if(!$conn){
+            $msg = "Server connection Failed" . mysqli_connect_error() ;
+        } else{
+            $sql = "SELECT * FROM `users` WHERE (email = $email) AND (password = $pasword);";
+            $user_result = mysqli_query($conn, $sql);
+
+            $fectch_result = mysqli_fetch_assoc($user_result);
+
+            if($email == $fectch_result['email'] && $pasword == $fectch_result['password']){
+                $_SESSION['ID'] = $fectch_result['ID'];
+                $_SESSION['email'] = $fectch_result['email'];
+                $_SESSION['login'] = true;
+
+                $msg = "Login successfull";
+                header("Location:product.php?msg={$msg}");
+            } else{
+                $msg = "Login Failde";
+            }
+        }
+    }
+}
+
+
+
+
+?>
     <!-- Registration-html-start -->
     <div class="container">
         <section class="section d-flex flex-column align-items-center justify-content-center py-4">
@@ -49,7 +94,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100">Log in</button>
+                                        <button type="submit" class="btn btn-primary w-100" name="login">Log in</button>
                                     </div>
                                     <div class="col-12">
                                         <span class="small">I don't have an account?<a href="registration.php">Registration</a></span>
