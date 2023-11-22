@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 $msg="";
 
 ?>
@@ -21,9 +22,53 @@ $msg="";
 
 </head>
 <body>
+<?php
+$user_id = $_SESSION['ID'];
+
+$conn = mysqli_connect("localhost", "root","","td_commers");
+if(!$conn){
+    $msg = "Server connection Error" . mysqli_connect_error();
+} else{
+
+// product upload
+
+if(isset($_POST['save_product'])){
+    if(!isset($_POST['product-title']) || !isset($_POST['product-description']) || !isset($_POST['product-price'])){
+        $msg = "Please insert All Field";      
+    } else{
+        $title = $_POST['product-title']; 
+        $description = $_POST['product-description']; 
+        $price = $_POST['product-price']; 
+
+
+        $product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
+         mysqli_query($conn, $product_sql);
+    }
+}
+
+}
+
+
+
+//upload image
+
+// if( isset($_POST['save_product'])){
+//     print_r($_FILES['product_thumb']);
+//     exit;
+//     // $ext = pathinfo($_FILES['product_thumb']['name'], PATHINFO_EXTENSION);
+// }
+
+
+
+
+
+
+?>
+
+
 <header class="header d-flex align-items-center">
             <div class="d-flex">
-                <a href="#" class="logo"><span>TD Blogs</span></a>
+                <a href="#" class="logo"><span>TD Commers</span></a>
             </div>
 
             <div class="search-bar">
@@ -40,7 +85,7 @@ $msg="";
                     </a><!-- End Profile Iamge Icon -->
                 </ul>
             </nav>
-        </header>
+ </header>
     <!-- Header Section End -->
 
 
@@ -124,15 +169,15 @@ $msg="";
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">image:</label>
-                    <input type="file"/>
+                    <input type="file" name="product_thumb" accept="image/png, image/jpg, image/jpge, image/gif" />
                  
                 </div>
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Product Title:</label>
-                    <input type="text" class="form-control" name="product-title" id="recipient-name">
+                    <input type="text"  class="form-control" name="product-title" id="recipient-name">
                 </div>
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label">Description:</label>
@@ -142,10 +187,10 @@ $msg="";
                     <label for="recipient-name" class="col-form-label">Price:</label>
                     <input type="text" class="form-control" name="product-price" id="recipient-name">
                 </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" name="save_product" data-bs-dismiss="modal">Save</button>
+                </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" name="save_product" data-bs-dismiss="modal">Save</button>
             </div>
             </div>
         </div>
