@@ -1,6 +1,9 @@
 <?php 
 session_start();
-
+if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
+    header("Location:login.php");
+    exit;
+}
 $msg="";
 
 ?>
@@ -41,8 +44,11 @@ if(isset($_POST['save_product'])){
         $price = $_POST['product-price']; 
 
 
-        $product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
-         mysqli_query($conn, $product_sql);
+        $set_product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
+        $product_result = mysqli_query($conn, $set_product_sql);
+
+
+
     }
 }
 
@@ -142,16 +148,28 @@ if(isset($_POST['save_product'])){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th><img src="profile-img.jpg" alt=""></th>
-                                <td>Lorem ipsum dolor, </td>
-                                <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit amet voluptatem molestiae illum atque nostrum error unde. </td>
-                                <td>$70</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Edit</a>
-                                    <a href="" class="btn btn-danger">Delete</a>
-                                </td>
-                            </tr>
+                            <?php
+                                //fetch product 
+                                $get_product_sql = "SELECT * FROM `products`";
+                                $get_product_result = mysqli_query($conn, $get_product_sql);
+
+                            while($fetch_product = mysqli_fetch_assoc($get_product_result)){
+
+                              echo "<tr>";
+                                  echo "<th>";
+                                     echo "<img src='profile-img.jpg' alt=''>";
+                                  echo "</th>";
+                                  echo "<td>" .$fetch_product['product_title']. "</td>";
+                                  echo  "<td>".$fetch_product['product_description']."</td>";
+                                  echo "<td>".$fetch_product['product_price']."</td>";
+                                  echo  "<td>";
+                                       echo "<a href='' class='btn btn-primary'>"."Edit". "</a>";
+                                       echo "<a href='delete.php?id={$fetch_product['ID']}' class='btn btn-danger'>"."Delete"."</a>";
+                                  echo  "</td>";
+                               echo "</tr>";
+                            }
+                            
+                            ?>
                         </tbody>
                     </table>
                 </div>
