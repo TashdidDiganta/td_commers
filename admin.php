@@ -1,3 +1,9 @@
+<?php 
+session_start();
+$msg="";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,7 +127,7 @@
                 <form>
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">image:</label>
-                    <span><i class="fa-solid fa-file"><input type="file"/></i> </span>
+                    <input type="file"/>
                  
                 </div>
                 <div class="mb-3">
@@ -146,6 +152,18 @@
         </div>
         <!-- Bootstrap Modal End -->
 
+
+        <!-- get all subscriber -->
+        <?php 
+        $conn = mysqli_connect("localhost", "root","","td_commers");
+        if(!$conn){
+            $msg="Server Connection Failed" . mysqli_connect_error();
+        } else{
+            $user_sql = "SELECT * FROM `users`";
+            $user_result = mysqli_query($conn,$user_sql);
+        }
+        ?>
+
         <!-- User Table Start -->
         <div class="col-lg-12 mt-5">
             <div class="card product-table overflow-auto">
@@ -163,19 +181,26 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>01</td>
-                                <th><img src="profile-img.jpg" alt=""></th>
-                                <td>Tashdid Diganta</td>
-                                <td>Diganta</td>
-                                <td>tashdiddiganta@gmail.com</td>
-                                <td>01/05/2023</td>
-                                <td>
-                                    <a href="" class="btn btn-danger">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <?php 
+                        
+                        
+                       echo  "<tbody>";
+                       while($get_subscriber = mysqli_fetch_assoc($user_result)){
+                           echo  "<tr>";
+                              echo  "<td>" . $get_subscriber['ID'] . "</td>";
+                                 echo "<th>";
+                                  echo  "<img src='".$get_subscriber['user_avatar']."' >";
+                                 echo "</th>";
+                                echo  "<td>". $get_subscriber['name'] ."</td>";
+                                echo  "<td>". $get_subscriber['email'] ."</td>";
+                                echo  "<td>". $get_subscriber['upload_date'] ."</td>";
+                                echo  '<td>';
+                                    echo "<a href='' class='btn btn-danger'>"."Delete"."</a>";
+                                echo  '</td>';
+                           echo  "</tr>";
+                       echo  "</tbody>";
+                       }
+                        ?>
                     </table>
                 </div>
             </div>

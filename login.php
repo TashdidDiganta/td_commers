@@ -3,14 +3,12 @@ session_start();
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,29 +25,35 @@ session_start();
 <?php
 $msg = "";
 if(isset($_POST['login'])){
-    if(!isset($_POST['email']) || !isset($_POST['password'])){
+    if(!isset($_POST['username']) || !isset($_POST['password'])){
         $msg="Please Insert all field";
     } else{
-        $email = $_POST['email'];
-        $pasword = $_POST['password'];
+        $username = isset($_POST['username'])? $_POST['username'] : "";
+        $password = isset($_POST['password'])? $_POST['password'] : "";
 
-        $conn = mysqli_connect("localhost", "root", "", "users");
+        $conn = mysqli_connect("localhost", "root", "", "td_commers");
 
         if(!$conn){
             $msg = "Server connection Failed" . mysqli_connect_error() ;
         } else{
-            $sql = "SELECT * FROM `users` WHERE (email = $email) AND (password = $pasword);";
+            $sql = "SELECT * FROM `users` WHERE (username = '$username') AND (password = '$password')";
             $user_result = mysqli_query($conn, $sql);
 
             $fectch_result = mysqli_fetch_assoc($user_result);
 
-            if($email == $fectch_result['email'] && $pasword == $fectch_result['password']){
+
+            if($username = $fectch_result['username'] && $pasword = $fectch_result['password']){
                 $_SESSION['ID'] = $fectch_result['ID'];
-                $_SESSION['email'] = $fectch_result['email'];
+                $_SESSION['username'] = $fectch_result['username'];
                 $_SESSION['login'] = true;
 
                 $msg = "Login successfull";
-                header("Location:product.php?msg={$msg}");
+
+                if($fectch_result['role'] == 'admin'){
+                    header("Location:admin.php?msg={$msg}");
+                } else{
+                    header("Location:product.php?msg={$msg}");
+                }
             } else{
                 $msg = "Login Failde";
             }
@@ -80,8 +84,8 @@ if(isset($_POST['login'])){
 
                                 <form method="post" class="row g-3">
                                     <div class="col-12">
-                                        <label for="" class="form-label">Your Email</label>
-                                        <input type="text" class="form-control" placeholder="Email" name="email">
+                                        <label for="" class="form-label">Your Username</label>
+                                        <input type="text" class="form-control" placeholder="Email" name="username">
                                     </div>
                                     <div class="col-12">
                                         <label for="" class="form-label">Password</label>

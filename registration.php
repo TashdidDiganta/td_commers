@@ -56,7 +56,27 @@ if(isset($_POST['registration'])){
             } else{
 
                 $registration_sql = "INSERT INTO `users` (`name`, `email`, `username`, `password`) VALUES ('$name', '$email', '$username', '$password');";
-                 mysqli_query($conn, $registration_sql);
+                 $data = mysqli_query($conn, $registration_sql);
+
+                 $user_id = mysqli_insert_id($conn);
+                 $user_sql = "SELECT * `users` WHERE ID = {$user_id}";
+                 $user_result = mysqli_query($conn,$user_sql);
+                 $user_info = mysqli_fetch_assoc($user_result);
+
+                 if(!$data){
+                    $msg = "Registration Faild";
+                 } else{
+                    $_SESSION['ID'] = $user_info['ID'];
+                    $_SESSION['username'] = $user_info['username'];
+                    $_SESSION['login'] = true;
+
+                    if($user_info['role']== 'admin'){
+                        header("Location:admin.php");
+                    } else{
+                        header("Location:product.php");
+                    }
+                 }
+
             }
         }
     }
