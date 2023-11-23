@@ -47,22 +47,63 @@ if(isset($_POST['save_product'])){
         $set_product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
         $product_result = mysqli_query($conn, $set_product_sql);
 
-
-
     }
 }
 
 }
 
-
-
 //upload image
 
-// if( isset($_POST['save_product'])){
-//     print_r($_FILES['product_thumb']);
-//     exit;
-//     // $ext = pathinfo($_FILES['product_thumb']['name'], PATHINFO_EXTENSION);
-// }
+
+//fetch product 
+// $get_product_sql = "SELECT * FROM `products`";
+// $get_product_result = mysqli_query($conn, $get_product_sql);
+
+
+if( isset($_POST['save_product'])){
+
+    $ext = pathinfo($_FILES['product_thumb']['name'], PATHINFO_EXTENSION);
+    $types = array('jpg','png','jpeg','gif', 'svg');
+
+    if(in_array($ext, $types)){
+        $msg = "This types of image not allowed!";
+    } else if($_FILES['product_thumb']['size' > 100000]){
+        $msg = "Your image size is too larze!";
+    } else{
+        $upload_dir = dirname(__FILE__) .'/'. '/uploads';
+        if(!file_exists($upload_dir)){
+            if(mkdir($upload_dir,0777,true)){
+                $file_name = $_FILES['product_thumb']['name'];
+                $file_upload_path = $upload_dir .'/'. $file_name;
+
+                if(file_exists($file_upload_path)){
+                    $file_name = rand(0,99999) .'.'. $ext; 
+                    $file_upload_path = $upload_dir .'/'. $file_name;
+                }
+
+                if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
+                    $host = $_SERVER['HTTP_ORIGIN'];
+                    $url = $host . '/td_commers/uploads' . $file_name;
+                    $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
+                }
+            } else{
+                $file_name = $_FILES['product_thumb']['name'];
+                $file_upload_path = $upload_dir .'/'. $file_name;
+
+                if(file_exists($file_upload_path)){
+                    $file_name = rand(0,99999) .'.'. $ext; 
+                    $file_upload_path = $upload_dir .'/'. $file_name;
+                }
+
+                if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
+                    $host = $_SERVER['HTTP_ORIGIN'];
+                    $url = $host . '/td_commers/uploads' . $file_name;
+                    $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -157,13 +198,13 @@ if(isset($_POST['save_product'])){
 
                               echo "<tr>";
                                   echo "<th>";
-                                     echo "<img src='profile-img.jpg' alt=''>";
+                                     echo "<img src='".$fetch_product['product_avatar']."' >";
                                   echo "</th>";
                                   echo "<td>" .$fetch_product['product_title']. "</td>";
                                   echo  "<td>".$fetch_product['product_description']."</td>";
                                   echo "<td>".$fetch_product['product_price']."</td>";
                                   echo  "<td>";
-                                       echo "<a href='' class='btn btn-primary'>"."Edit". "</a>";
+                                       echo "<a href='edit_product.php?id={$fetch_product['ID']}' name='{$fetch_product['ID']}' class='btn btn-primary left' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-whatever='@mdo'>"."Edit". "</a>";
                                        echo "<a href='delete.php?id={$fetch_product['ID']}' class='btn btn-danger'>"."Delete"."</a>";
                                   echo  "</td>";
                                echo "</tr>";
@@ -176,6 +217,76 @@ if(isset($_POST['save_product'])){
             </div>
         </div>
         <!-- Product Table End -->
+
+<?php
+
+    $product_id_sql = "SELECT * FROM `products`";
+    $product_id_result = mysqli_query($conn, $product_id_sql);
+    $fetch_id = mysqli_fetch_assoc($product_id_result);
+    $get_id = $fetch_id['ID'];
+  
+
+     //fetch product for edit
+     $edit_product_sql = "SELECT * FROM `products` WHERE ID = '$get_id'";
+     $get_product_result = mysqli_query($conn, $edit_product_sql);
+     $edit_product = mysqli_fetch_assoc($get_product_result);
+
+
+     //update product
+
+     if($_POST['update_product']){
+        if(!isset($_POST['product_title']) || !isset($_POST['product_description']) || !isset($_POST['product_price'])){
+            $msg="Insert All the field";
+        } else{
+            $product_title = $_POST['product_title'];
+            $product_description = $_POST['product-description'];
+            $product_price = $_POST['product_price'];
+            // $product_id = $edit_product['ID'];
+
+            $update_sql = "UPDATE `products` SET product_title = '$product_title', product_description = '$product_description', product_price = '$product_price' user_id = '$user_id' WHERE ID = '$product_id';";
+
+            mysqli_query($conn, $update_sql);
+        }
+     }
+
+?>
+        <!-- Edit product Modal Start -->
+        <div class="modal fade " id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">image:</label>
+                    <input type="file" name="product_thumb" accept="image/png, image/jpg, image/jpge, image/gif" />
+                 
+                </div>
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Product Title:</label>
+                    <input type="text"  class="form-control" name="product-title" value="<?php echo $edit_product['product_title'] ?>" id="recipient-name">
+                </div>
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Description:</label>
+                    <textarea class="form-control" name="product-description" id="message-text"><?php echo $edit_product['product_description'] ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Price:</label>
+                    <input type="text" class="form-control" name="product-price" value="<?php echo $edit_product['product_price'] ?>" id="recipient-name">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" name="update_product" data-bs-dismiss="modal">Save</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- Edit Product Modal End -->
+
 
 
         <!-- Bootstrap Modal Start -->
@@ -258,7 +369,7 @@ if(isset($_POST['save_product'])){
                                 echo  "<td>". $get_subscriber['email'] ."</td>";
                                 echo  "<td>". $get_subscriber['upload_date'] ."</td>";
                                 echo  '<td>';
-                                    echo "<a href='' class='btn btn-danger'>"."Delete"."</a>";
+                                    echo "<a href='delete_user.php?id={$get_subscriber['ID']}' class='btn btn-danger'>"."Delete"."</a>";
                                 echo  '</td>';
                            echo  "</tr>";
                        echo  "</tbody>";
