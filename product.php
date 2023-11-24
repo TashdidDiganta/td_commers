@@ -99,7 +99,7 @@
                         echo "<h5 class='card-title'>"."<span>"."Title: "."</span>" .$fetch_product['product_title']. "</h5>";
                         echo "<p class='card-text'>"."<span>"."Description: "."</span>" .$fetch_product['product_description']."</p>";
                         echo "<h5 class='card-price'>"."<span>"."Price: "."</span>" .$fetch_product['product_price']. "</h5>";
-                        echo "<a href='#' class='btn btn-primary'>"."Buy"."</a>";
+                        echo "<button type='submit' id='cart-btn' value='".$fetch_product['ID']."' class='btn btn-primary'>"."Buy"."</button>";
                     echo "</div>";
                 echo"</div>";
             }
@@ -110,5 +110,6 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
 </body>
 </html>
