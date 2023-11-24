@@ -71,44 +71,42 @@
     <!-- Sidebar End -->
 
 
+    <?php
+    $msg ="";
+    $conn = mysqli_connect("localhost", "root", "", "td_commers");
+    if(!$conn){
+        $msg="Server Connnection Faield" . mysqli_connect_error();
+    } 
+    
+    
+    ?>
+
+
     <main id="main">
         <!-- Product Table Start -->
-        <div class="col-lg-12">
-            <div class="card product-table overflow-auto">
-                <div class="filter">
-                    <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add</a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Top Seling<span>| Today</span></h5>
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col">Preview</th>
-                                <th>Product title</th>
-                                <th>Description</th>
-                                <th>price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th><img src="profile-img.jpg" alt=""></th>
-                                <td>Lorem ipsum dolor, </td>
-                                <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit amet voluptatem molestiae illum atque nostrum error unde. </td>
-                                <td>$70</td>
-                                <td>
-                                    <a href="" class="btn btn-primary">Edit</a>
-                                    <a href="" class="btn btn-danger">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
+        <?php
+        
+        $sql = "SELECT * FROM `products`";
+        $product_result = mysqli_query($conn, $sql);
+
+
+        echo "<div class='card-box'>";
+        while($fetch_product = mysqli_fetch_assoc($product_result)){
+                echo  "<div class='card mt-3' style='width: 18rem;'>";
+                    echo "<img src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D' class='card-img-top' >";
+                    echo "<div class='card-body'>";
+                        echo "<h5 class='card-title'>"."<span>"."Title: "."</span>" .$fetch_product['product_title']. "</h5>";
+                        echo "<p class='card-text'>"."<span>"."Description: "."</span>" .$fetch_product['product_description']."</p>";
+                        echo "<h5 class='card-price'>"."<span>"."Price: "."</span>" .$fetch_product['product_price']. "</h5>";
+                        echo "<a href='#' class='btn btn-primary'>"."Buy"."</a>";
+                    echo "</div>";
+                echo"</div>";
+            }
+            echo"</div>";
+        ?>
+
         <!-- Product Table End -->
-
-
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

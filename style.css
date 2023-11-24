@@ -335,6 +335,10 @@ h1,h2,h3,h4,h5,h6{
     top: 15px;
 }
 
+.description{
+  width: 800px;
+}
+
 .table tbody td{
     vertical-align: middle;
 }
@@ -346,4 +350,13 @@ h1,h2,h3,h4,h5,h6{
 
 .left{
   margin-right: 5px;
+}
+
+.card-box{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+span{
+  font-weight: 600;
 }

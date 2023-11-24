@@ -35,90 +35,80 @@ if(!$conn){
 
 // product upload
 
-// if(isset($_POST['save_product'])){
-//     if(!isset($_POST['product-title']) || !isset($_POST['product-description']) || !isset($_POST['product-price'])){
-//         $msg = "Please insert All Field";      
-//     } else{
-//         $title = $_POST['product-title']; 
-//         $description = $_POST['product-description']; 
-//         $price = $_POST['product-price']; 
-
-
-//         $set_product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
-//         $product_result = mysqli_query($conn, $set_product_sql);
-
-//     }
-// }
-
-
-
 if(isset($_POST['save_product'])){
-
-    // echo '<pre>';
-    // var_dump($_FILES['product_thumb']);
-    // exit;
-
-    $ext = pathinfo($_FILES['product_thumb']['name'], PATHINFO_EXTENSION);
-    $types = array('jpg','png','jpeg','gif', 'svg');
-
-    if(!in_array($ext, $types)){
-        $msg = "This types of image not allowed!";
-    } else if($_FILES['product_thumb']['size' > 100000]){
-        $msg = "Your image size is too larze!";
+    if(!isset($_POST['product-title']) || !isset($_POST['product-description']) || !isset($_POST['product-price'])){
+        $msg = "Please insert All Field";      
     } else{
-        $upload_dir = dirname(__FILE__) . '/uploads';
-        if(!file_exists($upload_dir)){
-            if(mkdir($upload_dir,0777,true)){
-                $file_name = $_FILES['product_thumb']['name'];
-                $file_upload_path = $upload_dir .'/'. $file_name;
+        $title = $_POST['product-title']; 
+        $description = $_POST['product-description'];
+        $description = mysqli_real_escape_string($conn, $description);
+        $price = $_POST['product-price']; 
 
-                if(file_exists($file_upload_path)){
-                    $file_name = rand(0,99999) .'.'.$ext; 
-                    $file_upload_path = $upload_dir .'/'. $file_name;
-                }
 
-                if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
-                    $host = $_SERVER['HTTP_ORIGIN'];
-                    $url = $host . '/td_commers/uploads/' . $file_name;
-                    $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
-                    mysqli_query($conn, $upload_avatar_sql);
-                }
-            } 
-        } else{
-                $file_name = $_FILES['product_thumb']['name'];
-                $file_upload_path = $upload_dir .'/'. $file_name;
+        $set_product_sql = "INSERT INTO `products` (`product_title`, `product_description`, `product_price`, `user_id`) VALUES ('$title', '$description', '$price', '$user_id');";
+        $product_result = mysqli_query($conn, $set_product_sql);
 
-                if(file_exists($file_upload_path)){
-                    $file_name = rand(0,99999) .'.'. $ext; 
-                    $file_upload_path = $upload_dir .'/'. $file_name;
-                }
-
-                if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
-                    $host = $_SERVER['HTTP_ORIGIN'];
-                    $url = $host . '/td_commers/uploads/' . $file_name;
-                    $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
-                    mysqli_query($conn, $upload_avatar_sql);
-                }
-            
-        }
     }
 }
 
 
 
+// if(isset($_POST['save_product'])){
+
+//     // echo '<pre>';
+//     // var_dump($_FILES['product_thumb']);
+//     // exit;
+
+//     $ext = pathinfo($_FILES['product_thumb']['name'], PATHINFO_EXTENSION);
+//     $types = array('jpg','png','jpeg','gif', 'svg');
+
+//     if(!in_array($ext, $types)){
+//         $msg = "This types of image not allowed!";
+//     } else if($_FILES['product_thumb']['size' > 100000]){
+//         $msg = "Your image size is too larze!";
+//     } else{
+//         $upload_dir = dirname(__FILE__) . '/uploads';
+//         if(!file_exists($upload_dir)){
+//             if(mkdir($upload_dir,0777,true)){
+//                 $file_name = $_FILES['product_thumb']['name'];
+//                 $file_upload_path = $upload_dir .'/'. $file_name;
+
+//                 if(file_exists($file_upload_path)){
+//                     $file_name = rand(0,99999) .'.'.$ext; 
+//                     $file_upload_path = $upload_dir .'/'. $file_name;
+//                 }
+
+//                 if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
+//                     $host = $_SERVER['HTTP_ORIGIN'];
+//                     $url = $host . '/td_commers/uploads/' . $file_name;
+//                     $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
+//                     mysqli_query($conn, $upload_avatar_sql);
+//                 }
+//             } 
+//         } else{
+//                 $file_name = $_FILES['product_thumb']['name'];
+//                 $file_upload_path = $upload_dir .'/'. $file_name;
+
+//                 if(file_exists($file_upload_path)){
+//                     $file_name = rand(0,99999) .'.'. $ext; 
+//                     $file_upload_path = $upload_dir .'/'. $file_name;
+//                 }
+
+//                 if(move_uploaded_file($_FILES['product_thumb']['tmp_name'], $file_upload_path)){
+//                     $host = $_SERVER['HTTP_ORIGIN'];
+//                     $url = $host . '/td_commers/uploads/' . $file_name;
+//                     $upload_avatar_sql = "INSERT INTO `products` (`product_avatar`) VALUES ('$url');";
+//                     mysqli_query($conn, $upload_avatar_sql);
+//                 }
+            
+//         }
+//     }
+// }
+
+
+
 
 }
-
-//upload image
-
-
-//fetch product 
-// $get_product_sql = "SELECT * FROM `products`";
-// $get_product_result = mysqli_query($conn, $get_product_sql);
-
-
-
-
 
 
 
@@ -213,7 +203,7 @@ if(isset($_POST['save_product'])){
                                      echo "<img src='".$fetch_product['product_avatar']."' >";
                                   echo "</th>";
                                   echo "<td>" .$fetch_product['product_title']. "</td>";
-                                  echo  "<td>".$fetch_product['product_description']."</td>";
+                                  echo  "<td class='description'>".$fetch_product['product_description']."</td>";
                                   echo "<td>".$fetch_product['product_price']."</td>";
                                   echo  "<td>";
                                        echo "<a href='edit_product.php?id={$fetch_product['ID']}' name='{$fetch_product['ID']}' class='btn btn-primary left' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-whatever='@mdo'>"."Edit". "</a>";
