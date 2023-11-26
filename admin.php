@@ -416,6 +416,7 @@ if(isset($_POST['save_product'])){
                                   echo  "<img src='".$get_subscriber['user_avatar']."' >";
                                  echo "</th>";
                                 echo  "<td>". $get_subscriber['name'] ."</td>";
+                                echo  "<td>". $get_subscriber['username'] ."</td>";
                                 echo  "<td>". $get_subscriber['email'] ."</td>";
                                 echo  "<td>". $get_subscriber['upload_date'] ."</td>";
                                 echo  '<td>';
