@@ -27,7 +27,8 @@
                 </form>
             </div>
             <nav class="header-nav">
-                <ul>
+                <ul class="d-flex ">
+                    <a href="" class="aligin-items-center"><i class="fa-solid fa-cart-shopping"></i></a>
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#">
                     <i class="fa-solid fa-user"></i>
                     <span class="d-none d-md-block dropdown-toggle ps-2">Diganta</span>
@@ -77,8 +78,27 @@
 
 
     <main id="main">
-        <!-- Product Table Start -->
+        <!-- Add to cart start -->
+        <div class="add-card">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card " style="width: 300px; ">
+                        <h1>Card</h1>
+                        
+                        <div class="listCard" id="cart-container">
+                        </div>
+                        <div class="checkOut">
+                            <div class="total">0</div>
+                            <div class="closeShopping" id="close">Close</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add to cart End -->
 
+
+        <!-- Product Table Start -->
         <?php
         
         $sql = "SELECT * FROM `products`";
@@ -100,8 +120,9 @@
             }
             echo"</div>";
         ?>
-
         <!-- Product Table End -->
+
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
