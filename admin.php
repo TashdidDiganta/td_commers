@@ -155,9 +155,9 @@ if(isset($_POST['save_product'])){
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="content.php">
+                <a class="nav-link collapsed" href="product.php">
                 <i class="fa-regular fa-address-book"></i>
-                <span>View Content</span>
+                <span>View Product</span>
                 </a>
             </li>
             <li class="nav-item">

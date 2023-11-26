@@ -1,10 +1,6 @@
 
-const productBnt = document.getElementById('cart-btn');
 
 
-
-
-productBnt.addEventListener('click', function(){
-    console.log('hello');
-
-});
+function getProduct(product){
+    console.log(product.product_price)
+}

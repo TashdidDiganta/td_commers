@@ -55,12 +55,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="content.php">
-                <i class="fa-regular fa-address-book"></i>
-                <span>View Content</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link collapsed" href="logout.php">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>log Out</span>
@@ -93,13 +87,14 @@
 
         echo "<div class='card-box'>";
         while($fetch_product = mysqli_fetch_assoc($product_result)){
+              $encode_product = htmlspecialchars(json_encode($fetch_product), ENT_QUOTES, 'UTF-8');
                 echo  "<div class='card mt-3' style='width: 18rem;'>";
                     echo "<img src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D' class='card-img-top' >";
                     echo "<div class='card-body'>";
                         echo "<h5 class='card-title'>"."<span>"."Title: "."</span>" .$fetch_product['product_title']. "</h5>";
                         echo "<p class='card-text'>"."<span>"."Description: "."</span>" .$fetch_product['product_description']."</p>";
                         echo "<h5 class='card-price'>"."<span>"."Price: "."</span>" .$fetch_product['product_price']. "</h5>";
-                        echo "<button type='submit' id='cart-btn' value='".$fetch_product['ID']."' class='btn btn-primary'>"."Buy"."</button>";
+                        echo "<button onclick='getProduct({$encode_product})' class='btn btn-primary'>"."Buy"."</button>";
                     echo "</div>";
                 echo"</div>";
             }
