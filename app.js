@@ -1,5 +1,22 @@
 
 const cartContainer = document.getElementById('cart-container');
+const cartIcon = document.getElementById('cart');
+const addCartBox = document.querySelector('.add-card');
+
+
+// add to cart icon
+const click = true;
+cartIcon.addEventListener('click', function(){
+    if(click){
+        addCartBox.classList.add('active');
+    } else{
+        addCartBox.classList.remove('active');
+    }
+})
+
+// cartIcon.addEventListener('click', function(){
+//     addCartBox.classList.remove('active');
+// })
 
 function getProduct(getProduct){
     const id = getProduct.ID;
@@ -11,6 +28,7 @@ function getProduct(getProduct){
     // console.log(product);
     const allProducts =  productArray(id,title,description,price)
     setDataInlocalStorage(allProducts);
+    
 }
 
 
@@ -30,7 +48,29 @@ function productArray(id, title,description,price){
 
 const fetchData = getDataFromLocalStorage('product');
 
-function addToCart(){
+addToCart(fetchData);
+
+
+function addToCart(fetchData){
+    let addCart = '';
+
+    fetchData.map(item => {
+        addCart += `
+        <div class="order-item">
+            <img src="${item.images}"/>
+              <div  class="name">${item.product_title}</div>
+               <div class="price" id="${item.ID}" price="${item.product_price}">${item.product_price}</div>
+                <div class="right-margin">
+                    <button onclick="udecressQuantitys(event)">-</button>
+                    <input type="number" step="1" value="1"/>
+                    <button onclick="incressQuantity(event)">+</button>
+                </div>                    
+               <span class="delete" onclick="deleteItem(${item.ID})"><i class="fa-solid fa-trash"></i></span>
+        </div>
+        `
+    })
+
+    cartContainer.innerHTML = addCart;
     
 }
 

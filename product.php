@@ -28,7 +28,7 @@
             </div>
             <nav class="header-nav">
                 <ul class="d-flex ">
-                    <a href="" class="aligin-items-center"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <span class="aligin-items-center" style="cursor: pointer;" id="cart"><i class="fa-solid fa-cart-shopping"></i></span>
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#">
                     <i class="fa-solid fa-user"></i>
                     <span class="d-none d-md-block dropdown-toggle ps-2">Diganta</span>
@@ -84,7 +84,6 @@
                 <div class="col-md-4">
                     <div class="card " style="width: 300px; ">
                         <h1>Card</h1>
-                        
                         <div class="listCard" id="cart-container">
                         </div>
                         <div class="checkOut">
