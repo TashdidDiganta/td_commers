@@ -285,15 +285,17 @@ if(isset($_POST['save_product'])){
 
 
      //update product
-
-     if($_POST['update_product']){
+     if(isset($_POST['update_product'])){
         if(!isset($_POST['product_title']) || !isset($_POST['product_description']) || !isset($_POST['product_price'])){
             $msg="Insert All the field";
         } else{
-            $product_title = $_POST['product_title'];
+            $product_title = $_POST['product-title'];
             $product_description = $_POST['product-description'];
-            $product_price = $_POST['product_price'];
-            // $product_id = $edit_product['ID'];
+            $product_price = $_POST['product-price'];
+
+            $product_id = $edit_product['ID'];
+            
+            var_dump($product_id);
 
             $update_sql = "UPDATE `products` SET product_title = '$product_title', product_description = '$product_description', product_price = '$product_price' user_id = '$user_id' WHERE ID = '$product_id';";
 

@@ -71,7 +71,7 @@ if(isset($_POST['registration'])){
                     $_SESSION['login'] = true;
 
                     if($user_info['role']== 'admin'){
-                        header("Location:admin.php");
+                        header("Location:admin.php?msg='Registration Successfull'");
                     } else{
                         header("Location:product.php");
                     }

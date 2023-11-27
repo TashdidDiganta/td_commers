@@ -194,6 +194,7 @@ function deleteItem(id){
     const newArray = fetchData.filter(i => parseFloat(i.ID) !== id )
     fetchData = newArray
     count.innerText = fetchData.length
+
     addToCart(fetchData);
     setDataInlocalStorage(fetchData);
 }
