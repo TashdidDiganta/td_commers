@@ -373,6 +373,7 @@ span{
   top:95px;
   left: 100%;
   z-index: 1;
+  transition: 0.3s;
 
 }
 
@@ -458,6 +459,10 @@ padding: 0px 15px 0px 15px;
   border: none;
   background: cadetblue;
  
+}
+
+.order-item img{
+  width: 75px;
 }
 
 .price{

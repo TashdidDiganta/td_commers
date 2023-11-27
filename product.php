@@ -48,17 +48,11 @@
                 <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="profile.php">
-                <i class="fa-regular fa-address-book"></i>
-                <span>Profile</span>
 
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="logout.php">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                <span>log Out</span>
+                <span>Registration</span>
                 </a>
             </li>
         </ul>
@@ -94,6 +88,8 @@
                 </div>
             </div>
         </div>
+
+
         <!-- Add to cart End -->
 
 
