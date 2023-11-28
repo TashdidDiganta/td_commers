@@ -35,7 +35,7 @@ function getProduct(getProduct){
     const existingObject  = fetchData.find(i => i.ID == id)
     if(existingObject){
         console.log('exist');
-        alert('This Product Already added!');
+        setTimeout(function(){ alert('This Product Already added!') }, 1000);
     } else{
         const allProducts =  productArray(id,title,price, images, firstPrice)
         addToCart(allProducts);
@@ -123,21 +123,17 @@ function incressQuantity(e){
     const incressValue = parseInt(inputValue) + 1;
     e.target.previousElementSibling.value = incressValue;
 
-    const priceField = e.target.parentElement.previousElementSibling.classList.contains('price')? parseFloat(e.target.parentElement.previousElementSibling.getAttribute('price')) : 0;
-    const productPrice = parseFloat(priceField * incressValue);
-    e.target.parentElement.previousElementSibling.innerText = productPrice;
-
     //set update price in local storage
     const priceID = e.target.parentElement.previousElementSibling.classList.contains('price')? parseFloat(e.target.parentElement.previousElementSibling.getAttribute('id')) : 0;
     const getLocalData = getDataFromLocalStorage('product')? getDataFromLocalStorage('product') : [];
 
     const newPrice = getLocalData.map(i => {
-        console.log(priceID)
         if(i.ID == priceID){
-            return {...i, quantity : incressValue, product_price: productPrice }
+            return {...i, quantity : incressValue }
         }
         return i;
     })
+
     setDataInlocalStorage(newPrice)
     totalPrice(newPrice)
 }
@@ -148,20 +144,13 @@ function decressQuantitys(e){
     const decressValue = parseInt(inputValue) - 1;
     e.target.nextElementSibling.value = decressValue;
 
-    const firstPrice = e.target.parentElement.previousElementSibling.classList.contains('price')? parseFloat(e.target.parentElement.previousElementSibling.getAttribute('firstPrice')) : 0;
-    const price =  e.target.parentElement.previousElementSibling.innerText;
-    console.log(firstPrice,price)
-    const productPrice = parseFloat(price - firstPrice);
-    e.target.parentElement.previousElementSibling.innerText = productPrice;
-
-
     // //set update price in local storage
     const priceID = e.target.parentElement.previousElementSibling.classList.contains('price')? parseFloat(e.target.parentElement.previousElementSibling.getAttribute('id')) : 0;
     const getLocalData = getDataFromLocalStorage('product')? getDataFromLocalStorage('product') : [];
 
     const newPrice = getLocalData.map(i => {
         if(i.ID == priceID){
-            return {...i, quantity : decressValue, product_price: productPrice }
+            return {...i, quantity : decressValue }
         }
         return i;
     })
@@ -180,23 +169,24 @@ function totalPrice(sumPrice){
         return acc + (product.product_price * product.quantity)
     },0);
 
+    console.log(totalPrice);
+
 
     total.innerText = totalPrice
 }
 
+totalPrice(fetchData);
 
 
 
 
 //Delete cart item 
 function deleteItem(id){
-    console.log(id)
-    const newArray = fetchData.filter(i => parseFloat(i.ID) !== id )
-    fetchData = newArray
-    count.innerText = fetchData.length
+    const newArray = fetchData.filter(i => parseFloat(i.ID) !== id );
+    count.innerText = newArray.length
 
-    addToCart(fetchData);
-    setDataInlocalStorage(fetchData);
+    addToCart(newArray);
+    setDataInlocalStorage(newArray);
 }
 
 
